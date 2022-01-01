@@ -66,7 +66,7 @@ def create_timelapse(image_folder_path, params="",nb_test_rest = 3):
 
     if nb_test_rest > 0:
         if len(images) > 3:
-            video_name = f'timelapse - {images[0].split(" ")[0]} - {images[-1].split(" ")[0]} [{params}].mp4'
+            video_name = f'timelapse - {images[0].split(" ")[0]} [{params}].mp4'
             video_name = f"{RESULTS_DIR_PATH}/{video_name}"
 
             try:
@@ -83,6 +83,7 @@ def create_timelapse(image_folder_path, params="",nb_test_rest = 3):
             except:
                 print("error in video creation...")
                 print("let's try again ...")
+                time.sleep(5)
                 create_timelapse(image_folder_path, params, nb_test_rest-1)
             else:
                 print("~ video saved at", video_name)
@@ -96,7 +97,7 @@ def create_timelapse(image_folder_path, params="",nb_test_rest = 3):
 def main():
     TIME_MAX_HOUR = int(input(" * TIME MAX (HOUR) > "))
     #TIME_MAX_HOUR = 0.01
-    SCREENSHOT_DELAY_SEC = int(input(" * SCREENSHOT DELAY (SEC) [5, 10, 15] > "))
+    SCREENSHOT_DELAY_SEC = int(input(" * SCREENSHOT DELAY (SEC) [10, 15, 30] > "))
     #SCREENSHOT_DELAY_SEC = 1
     notify("Timelapse #screenshots in progress", f"{TIME_MAX_HOUR} hour remaining")
     start_time = time.time()
@@ -108,7 +109,7 @@ def main():
     finally:
         end_time_hour = convert_sec_to_hour((time.time() - start_time))
         notify("Timelapse #screenshots finish", f"{round(end_time_hour,1)}h time ...")
-        create_timelapse(CACHE_DIR, params=f"({TIME_MAX_HOUR},{SCREENSHOT_DELAY_SEC}),{VIDEO_FPS}")
+        create_timelapse(CACHE_DIR, params=f"duration={round(end_time_hour,1)}, max_hour={TIME_MAX_HOUR}, screens_delay={SCREENSHOT_DELAY_SEC}")
         print("\n bye bye :) ")
         time.sleep(10)
 
