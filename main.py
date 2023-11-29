@@ -10,12 +10,10 @@ from param import SECRET_SCREENSHOTS_DIR_PATH, VIDEO_FPS, RESULTS_DIR_PATH
 
 
 def CreerDossierSauvegarde(where, doss=None):
-    nomEmplacementSauvegarde = where + "/" + doss if doss else where
+    nomEmplacementSauvegarde = f"{where}/{doss}" if doss else where
     if not os.path.exists(nomEmplacementSauvegarde):
         os.mkdir(nomEmplacementSauvegarde)
-        return nomEmplacementSauvegarde
-    else:
-        return nomEmplacementSauvegarde
+    return nomEmplacementSauvegarde
 
 
 # **** EMPLACEMENT SAUVEGARDE
@@ -35,15 +33,15 @@ def run_screen(delay_sec, limit_time_hour=24, compt_sec=0):
         time.sleep(delay_sec)
         run_screen(delay_sec, limit_time_hour, compt_sec + 1)
     else:
-        print(f"... run_screen() stop, time is over !")
+        print("... run_screen() stop, time is over !")
         return convert_sec_to_hour(compt_sec)
 
 
 def screen():
     nomFichier = datetime.datetime.now().strftime('%Y-%m-%d-%H%M%S') + " " + username
-    photo = CACHE_DIR + "/" + nomFichier + ".png"
+    photo = f"{CACHE_DIR}/{nomFichier}.png"
     pyautogui.screenshot(photo)
-    print("~ " + photo)
+    print(f"~ {photo}")
 
 
 def remove(path):
@@ -57,7 +55,7 @@ def remove(path):
             print(f" * Unable to delete the {path}")
 
 def notify(title="...", message="...."):
-    image = os.getcwd() + "/img/time-lapse.ico"
+    image = f"{os.getcwd()}/img/time-lapse.ico"
     print(image)
     notification.notify(title=title, message=message, timeout=10, app_icon=image)
 
